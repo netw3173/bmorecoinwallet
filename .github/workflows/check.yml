@@ -123,7 +123,7 @@ jobs:
           sudo apt update -y
           sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev
           wget -O boost_1_55_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.gz/download
-          tar xzvf boost_1_55_0.tar.gz\
+          tar xzvf boost_1_55_0.tar.gz
           cd boost_1_55_0/
           sudo ./bootstrap.sh --prefix=/usr/ 
           sudo ./b2
@@ -176,7 +176,7 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev 
-          tar xzvf boost_1_55_0.tar.gz\
+          tar xzvf boost_1_55_0.tar.gz
           cd boost_1_55_0/
           sudo ./bootstrap.sh --prefix=/usr/ 
           sudo ./b2
@@ -220,7 +220,7 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev
-           tar xzvf boost_1_55_0.tar.gz\
+           tar xzvf boost_1_55_0.tar.gz
           cd boost_1_55_0/
           sudo ./bootstrap.sh --prefix=/usr/ 
           sudo ./b2
