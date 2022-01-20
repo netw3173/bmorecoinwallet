@@ -19,8 +19,7 @@ jobs:
 
       - name: Setup msbuild
         uses: microsoft/setup-msbuild@v1.0.2
-        with:
-            vs-version: '[15.0,15.9)'
+       
             
       - name: Install Boost
         shell: powershell
