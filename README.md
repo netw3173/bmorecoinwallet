@@ -1,11 +1,44 @@
+[![Nightly Build](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/nightly.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/nightly.yml)
+
+# Ubuntu 18.04
 [![Ubuntu 18.04](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu18.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu18.yml)
+* sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
+
+# Ubuntu 20.04
 [![Ubuntu 20.04](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu20.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu20.yml)
-[![Windows](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml)
-[![macOS](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml)
+* sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.67-all-dev
+
+# AppImage
 [![AppImage](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/appimage.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/appimage.yml)
+* sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
+
+# Windows
+[![Windows](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml)
+
+# macOS
+[![macOS](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml)
+
+# Vulnerability Testing
 [![CodeQL](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml)
+
+# Full Build Check
 [![Build check](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml)
-# Windows 11/10: Use Ubuntu for Windows
+
+# How to get BALTx - Ubuntu
+## Do this once to install
+* cd ~
+* wget https://github.com/xmrig/xmrig/releases/download/v6.16.2/xmrig-6.16.2-linux-x64.tar.gz
+* tar -xvf xmrig-6.16.2-linux-x64.tar.gz
+* sudo mv xmrig-6.16.2/xmrig /bin/xmrig
+* git clone https://gist.github.com/73362a23ccbb1aeb7bea9a1e50a52cba.git sample
+* cp sample/config.json config.json
+* REPLACE user WITH YOUR NEW WALLET ADDRESS IN config.json
+## Do this to start making BALTx
+* xmrig -c config.json 
+* View your status at https://pool.bmorecoin.com/#worker_stats
+
+
+# Old instructions for Windows 11/10: Use Ubuntu for Windows
 ## Ubuntu for Windows
 * https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6
 * Open in "Store" and install
@@ -30,16 +63,4 @@ wsl --install
 * 9: make
 * 10: ./bmorecoin &
 
-# How to get BALTx - Ubuntu
-## Do this once to install
-* cd ~
-* wget https://github.com/xmrig/xmrig/releases/download/v6.16.2/xmrig-6.16.2-linux-x64.tar.gz
-* tar -xvf xmrig-6.16.2-linux-x64.tar.gz
-* sudo mv xmrig-6.16.2/xmrig /bin/xmrig
-* git clone https://gist.github.com/73362a23ccbb1aeb7bea9a1e50a52cba.git sample
-* cp sample/config.json config.json
-* REPLACE user WITH YOUR NEW WALLET ADDRESS IN config.json
-## Do this to start making BALTx
-* xmrig -c config.json 
-* View your status at https://pool.bmorecoin.com/#worker_stats
 *
