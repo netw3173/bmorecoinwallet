@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=BMoreCoin Desktop
+Comment=BMoreCoin Desktop (GUI Wallet)
+Exec=bmorecoin
+Terminal=false
+Type=Application
+Icon=bmorecoin
+MimeType=x-scheme-handler/bmorecoinwallet;
+Categories=Office;Finance;
+X-AppImage-Version=5c4892d
