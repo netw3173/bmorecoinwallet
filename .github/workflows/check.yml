@@ -208,8 +208,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          dpkg -L libboost1.67-all-dev
-          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
+          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost-all-dev
 
       - name: Clone bmorecoin
         run: |
