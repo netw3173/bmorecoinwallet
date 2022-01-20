@@ -121,7 +121,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.67-all-dev
+          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
         
           
 
@@ -171,7 +171,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.67-all-dev
+          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
           
 
       - name: Clone bmorecoin
@@ -211,13 +211,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev
-          wget -O boost_1_67_0.tar.gz https://sourceforge.net/projects/boost/files/boost/1.67.0/boost_1_67_0.tar.gz/download
-           tar xzvf boost_1_67_0.tar.gz
-          cd boost_1_67_0/
-          sudo ./bootstrap.sh --prefix=/usr/ 
-          sudo ./b2
-          sudo ./b2 install
+          sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.67-all-dev
+          
 
       - name: Clone bmorecoin
         run: |
