@@ -4,11 +4,6 @@ include(CryptoNoteWallet.cmake)
 
 project(${CN_PROJECT_NAME})
 
-if(MSVC)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
-else(MSVC)
-#[[target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)]] This failed the Linux Builds
-endif(MSVC)
 
 execute_process(COMMAND git log -1 --pretty=format:%h
 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
