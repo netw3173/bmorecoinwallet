@@ -13,6 +13,7 @@ extraction:
     after_prepare:    # Customizable step used by all languages.
       - export GNU_MAKE=make
       - export GIT=true
+      - git clone https://github.com/BMoreToken/bmorecoin cryptonote
     configure:    # Customizable step used only by C/C++ extraction.
       command:
         - ./prepare_deps
@@ -23,4 +24,4 @@ extraction:
       - export CRYPTOPP_DIR=$LGTM_SRC/cryptopp
     index:    # Customizable step used by all languages.
       build_command:
-        - git clone https://github.com/BMoreToken/bmorecoin cryptonote; $GNU_MAKE -j2 -s 
+        - $GNU_MAKE -j2 -s 
