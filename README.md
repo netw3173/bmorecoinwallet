@@ -1,4 +1,7 @@
 [![Nightly Build](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/nightly.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/nightly.yml)
+[![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/BMoreToken/bmorecoinwallet.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/BMoreToken/bmorecoinwallet/context:cpp)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/BMoreToken/bmorecoinwallet.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/BMoreToken/bmorecoinwallet/alerts/)
+[![CodeQL](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml)
 
 # Ubuntu 18.04
 [![Ubuntu 18.04](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu18.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/ubuntu18.yml)
@@ -17,9 +20,6 @@
 
 # macOS
 [![macOS](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml)
-
-# Vulnerability Testing
-[![CodeQL](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/codeql-analysis.yml)
 
 # Full Build Check
 [![Build check](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml)
