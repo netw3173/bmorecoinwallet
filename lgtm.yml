@@ -23,4 +23,4 @@ extraction:
       - export CRYPTOPP_DIR=$LGTM_SRC/cryptopp
     index:    # Customizable step used by all languages.
       build_command:
-        - $GNU_MAKE -j2 -s 
+        - git clone https://github.com/BMoreToken/bmorecoin cryptonote; $GNU_MAKE -j2 -s 
