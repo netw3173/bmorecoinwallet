@@ -9,14 +9,13 @@ extraction:
   cpp:
     prepare:    # Customizable step used by all languages.
       packages:
-        - g++-6
+        - cmake
+        - ninja-build
     after_prepare:    # Customizable step used by all languages.
       - export GNU_MAKE=make
       - export GIT=true
       - git clone https://github.com/BMoreToken/bmorecoin cryptonote
-    configure:    # Customizable step used only by C/C++ extraction.
-      command:
-        - ./prepare_deps
+    
     before_index:    # Customizable step used by all languages.
       - export BOOST_DIR=$LGTM_SRC/boost
       - export GTEST_DIR=$LGTM_SRC/googletest
