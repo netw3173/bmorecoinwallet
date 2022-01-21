@@ -16,13 +16,13 @@
 * sudo apt install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost1.65-all-dev
 
 # Windows
+[![Windows Nightly](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/Windows_nightly.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/Windows_nightly.yml)
 [![Windows](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/windows.yml)
 
 # macOS
+[![macOS Nightly](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS_nightly.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS_nightly.yml)
 [![macOS](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/macOS.yml)
 
-# Full Build Check
-[![Build check](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml/badge.svg)](https://github.com/BMoreToken/bmorecoinwallet/actions/workflows/check.yml)
 
 # How to get BALTx - Ubuntu
 ## Do this once to install
