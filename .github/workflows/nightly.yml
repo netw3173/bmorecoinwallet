@@ -15,31 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Boost
+      - name: Install Boost and Qt
         run: |
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0.tar.gz
-          tar -xzf boost_1_67_0.tar.gz
-          cd boost_1_67_0
-          ./bootstrap.sh --prefix=/usr/local
-          ./b2 
-          ./b2 install
-     
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v2
-        with:
-          modules: "qtcharts"
-
-      - name: Clone bmorecoin
+          brew install boost qt@5
+      - name: Clone BMoreCoin
         run: |
           rm -rf cryptonote
           git clone https://github.com/BMoreToken/bmorecoin.git cryptonote
       - name: Build
         id: build
         run: |
+          export PATH="/usr/local/opt/qt@5/bin:$PATH"
           build_folder="build/release"
           ccx_version=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
           release_name="ccx-desktop-macOS-v$ccx_version"
-          app_name="bmorecoin.app"
+          app_name="bmorecoin-desktop.app"
           make -j4 build-release
           cd "$build_folder"
           macdeployqt "$app_name"
