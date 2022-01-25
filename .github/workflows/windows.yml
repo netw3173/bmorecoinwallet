@@ -8,9 +8,9 @@ on:
 jobs:
   build-windows:
     name: Windows
-    runs-on: windows-2016
+    runs-on: windows-latest
     env:
-      BOOST_ROOT: C:/tools/boost/x86_64
+      BOOST_ROOT: C:/hostedtoolcache/windows/Boost/1.72.0/x86_64
     steps:
       - uses: actions/checkout@v2
 
@@ -21,7 +21,7 @@ jobs:
         shell: powershell
         run: |
           echo "${env:BOOST_ROOT}"
-          $Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.1-64.exe"
+          $Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe"
           (New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
           Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${env:BOOST_ROOT}"
 
@@ -73,7 +73,7 @@ jobs:
 
           cmake -G "Visual Studio 15 2017 Win64" ..
           dir
-          msbuild bmorecoinwallet.sln /p:Configuration=Release /m:2
+          msbuild bmorecoin.sln /p:Configuration=Release /m:2
 
           echo "::set-output name=build_folder::${build_folder}"
           echo "::set-output name=release_folder::${release_folder}"
@@ -95,9 +95,9 @@ jobs:
           cp "C:\Program Files\OpenSSL-Win64\libssl*.dll" "Final/"
           windeployqt --release CONCEAL-GUI.exe --dir "Final/" --no-translations --no-opengl-sw
           cd ../../
-          makensis ConcealWallet.nsi
+          makensis BMoreCoinWallet.nsi
           cd "$build_folder/$release_folder"
-          Compress-Archive -Path Conceal-Setup.exe -DestinationPath "$release_name.zip"
+          Compress-Archive -Path BMoreCoin-Setup.exe -DestinationPath "$release_name.zip"
 
           $sha256 = (Get-FileHash "$release_name.zip").Hash
           $asset_path = "./$build_folder/$release_folder/$release_name.zip"
