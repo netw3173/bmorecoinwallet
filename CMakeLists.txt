@@ -5,7 +5,7 @@ include(CryptoNoteWallet.cmake)
 project(${CN_PROJECT_NAME})
 
 if(MSVC)
-set(CMAKE_PREFIX_PATH "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\cmake\\"
+set(CMAKE_PREFIX_PATH "C:\\Qt\\5.15.2\\msvc2019_64\\lib\\cmake\\")
 endif(MSVC)
 
 execute_process(COMMAND git log -1 --pretty=format:%h
