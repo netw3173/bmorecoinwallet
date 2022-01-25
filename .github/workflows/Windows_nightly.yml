@@ -76,7 +76,7 @@ jobs:
           cd "$build_folder"
 
           cmake -G "Visual Studio 14 2015 Win64" ..
-          msbuild ../bmorecoinwallet.sln /p:Configuration=Release /m:2
+          msbuild CryptoNote.sln  /p:Configuration=Release /m
 
           echo "::set-output name=build_folder::${build_folder}"
           echo "::set-output name=release_folder::${release_folder}"
