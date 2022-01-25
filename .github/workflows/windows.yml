@@ -71,7 +71,7 @@ jobs:
           New-Item "$build_folder\$release_folder" -ItemType Directory
           cd "$build_folder"
 
-          cmake -G "Visual Studio 15 2017 Win64" ..
+          cmake -G "Visual Studio 16 2019" ..
           dir
           msbuild bmorecoin.sln /p:Configuration=Release /m:2
 
