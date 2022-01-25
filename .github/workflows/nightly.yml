@@ -145,21 +145,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+     
+      - name: Install dependencies
+        run: |
+          wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+          tar -xzf boost_1_64_0.tar.gz
+          cd boost_1_64_0
+          ./bootstrap.sh --prefix=/usr/local
+          ./b2 --reconfigure boost.locale.icu=on
+          ./b2 install
+     
       - name: Install Qt
         uses: jurplel/install-qt-action@v2
         with:
           modules: "qtcharts"
 
-      - name: Install dependencies
-        run: |
-          brew install icu4c
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
-          tar -xzf boost_1_64_0.tar.gz
-          cd boost_1_64_0
-          ./bootstrap.sh  --prefix=/usr/local
-          ./b2 --reconfigure boost.locale.iconv=off boost.locale.icu=on
-          ./b2 install
-          
+     
+     
       - name: Clone bmorecoin
         run: |
           rm -rf cryptonote
