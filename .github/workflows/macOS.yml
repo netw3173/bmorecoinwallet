@@ -21,7 +21,7 @@ jobs:
         run: |
           wget https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0_rc2.tar.gz
           tar -xzf boost_1_67_0_rc2.tar.gz
-          cd boost_1_50_0
+          cd boost_1_67_0_rc2
           ./bootstrap.sh 
           sudo ./b2
           sudo ./b2 install
