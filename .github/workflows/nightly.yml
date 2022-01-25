@@ -152,11 +152,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0_rc2.tar.gz
-          tar -xzf boost_1_67_0_rc2.tar.gz
-          cd boost_1_67_0
+          brew install icu4c
+          wget https://boostorg.jfrog.io/artifactory/main/release/1.64.0/source/boost_1_64_0.tar.gz
+          tar -xzf boost_1_64_0.tar.gz
+          cd boost_1_64_0
           ./bootstrap.sh  --prefix=/usr/local
-          ./b2
+          ./b2 --reconfigure boost.locale.iconv=off boost.locale.icu=on
           ./b2 install
           
       - name: Clone bmorecoin
