@@ -68,7 +68,7 @@ jobs:
           mkdir "$build_folder"
           cd "$build_folder"
           cmake -G "Visual Studio 16 2019" ..
-          msbuild CryptoNote.sln /p:Configuration=Release /m
+          msbuild bmorecoin.sln /p:Configuration=Release /m
           echo "::set-output name=build_folder::${build_folder}"
           echo "::set-output name=release_folder::${release_folder}"
           echo "::set-output name=release_name::${release_name}"
