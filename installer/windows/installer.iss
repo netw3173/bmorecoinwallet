@@ -1,11 +1,11 @@
-#define AppSetupName 'Conceal Desktop'
-#define AppVersion '6.3.1'
-#define AppPublisher 'Conceal Network'
-#define AppCopyright 'Copyright (C) Conceal Network 2020'
-#define AppURL 'https://conceal.network'
-#define UpdateURL 'https://github.com/ConcealNetwork/conceal-desktop/releases'
-#define AppExe 'conceal-desktop.exe'
-#define AppComments 'Conceal Wallet and Banking App'
+#define AppSetupName 'BMoreCoin Desktop'
+#define AppVersion '1.0.15'
+#define AppPublisher 'BMoreToken / BMoreCoin'
+#define AppCopyright 'Copyright (C) BMoreNetwork 2022'
+#define AppURL 'https://bmorecoin.com'
+#define UpdateURL 'https://github.com/BMoreToken/bmorecoinwallet/releases'
+#define AppExe 'bmorecoin-desktop.exe'
+#define AppComments 'BMoreCoin Wallet and Banking App'
 #define LicenseFile 'license.txt'
 
 [Setup]
@@ -80,8 +80,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"
 
 [Registry]
 // Remove the registry entries left by the old installer
-Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\App Paths\CONCEAL-GUI.exe"; Flags: deletekey
-Root: HKLM; Subkey: "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Conceal Wallet";  Flags: deletekey
+Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\App Paths\bmorecoin.exe"; Flags: deletekey
+Root: HKLM; Subkey: "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\BMoreCoin Wallet";  Flags: deletekey
 
 [Files]
 Source: "{#LicenseFile}"; DestDir: "{app}";
@@ -112,8 +112,8 @@ Type: filesandordirs; Name: "{code:OldVersionPath}\imageformats"
 Type: filesandordirs; Name: "{code:OldVersionPath}\languages"
 Type: filesandordirs; Name: "{code:OldVersionPath}\platforms"
 Type: filesandordirs; Name: "{code:OldVersionPath}\styles"
-Type: files; Name: "{code:OldVersionPath}\Conceal Wallet website.url"
-Type: files; Name: "{code:OldVersionPath}\CONCEAL-GUI.exe"
+Type: files; Name: "{code:OldVersionPath}\BMoreCoin Wallet website.url"
+Type: files; Name: "{code:OldVersionPath}\bmorecoin.exe"
 Type: files; Name: "{code:OldVersionPath}\D3Dcompiler_47.dll"
 Type: files; Name: "{code:OldVersionPath}\lib*.dll"
 Type: files; Name: "{code:OldVersionPath}\Qt5*.dll"
@@ -121,11 +121,11 @@ Type: files; Name: "{code:OldVersionPath}\uninstall.exe"
 Type: dirifempty; Name: "{code:OldVersionPath}"
 
 // Uninstall the old version (Remove the links installed by the old installer)
-Type: files; Name: "{commondesktop}\Conceal Wallet.lnk"
-Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Conceal Wallet\Conceal Wallet.lnk"
-Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Conceal Wallet\Conceal Wallet Website.lnk"
-Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Conceal Wallet\Uninstall Conceal Wallet.lnk"
-Type: dirifempty; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Conceal Wallet"
+Type: files; Name: "{commondesktop}\BMoreCoin Wallet.lnk"
+Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\BMoreCoin Wallet\BMoreCoin Wallet.lnk"
+Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\BMoreCoin Wallet\BMoreCoin Wallet Website.lnk"
+Type: files; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\BMoreCoin Wallet\Uninstall BMoreCoin Wallet.lnk"
+Type: dirifempty; Name: "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\BMoreCoin Wallet"
 
 [CustomMessages]
 DependenciesDir={AppSetupName} Dependencies
@@ -148,7 +148,7 @@ begin
 
 	Result := true;
 
-	if RegQueryStringValue(HKLM, 'Software\Microsoft\Windows\CurrentVersion\App Paths\CONCEAL-GUI.exe', '', V) then
+	if RegQueryStringValue(HKLM, 'Software\Microsoft\Windows\CurrentVersion\App Paths\BMoreCoin.exe', '', V) then
 	begin
     	if MsgBox('An old version of {#AppSetupName} is installed on this computer.' + #13#10 +
 		'This installer will uninstall the old version and install the new one.' + #13#10 + #13#10 +
