@@ -242,6 +242,7 @@ jobs:
         run: |
           rm -rf cryptonote
           git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          chmod +x ./.github/checkout.sh
           ./.github/checkout.sh
 
       - name: Build
