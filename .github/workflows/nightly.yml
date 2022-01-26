@@ -102,6 +102,8 @@ jobs:
 
       - name: Install Boost and Qt
         run: |
+          brew update 
+          brew search boost
           brew install boost qt@5
       - name: Clone BMoreCoin
         run: |
