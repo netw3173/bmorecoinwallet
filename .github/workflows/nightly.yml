@@ -9,6 +9,91 @@ on:
   pull_request:
 
 jobs:
+ build-windows:
+    name: Windows
+    runs-on: windows-latest
+    env:
+      BOOST_ROOT: C:/hostedtoolcache/windows/Boost/1.72.0/x86_64
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Install Boost
+        shell: powershell
+        run: |
+          echo "${env:BOOST_ROOT}"
+          $Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe"
+          (New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
+          Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${env:BOOST_ROOT}"
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          host: "windows"
+          target: "desktop"
+          modules: "qttools5 qtcharts"
+          install-deps: "true"
+
+      - name: Clone bmorecoin
+        shell: powershell
+        run: |
+          Remove-Item cryptonote -Recurse -Force -ErrorAction Ignore
+          git clone https://github.com/BMoreToken/bmoretoken cryptonote
+      - name: Pre-build setup
+        shell: powershell
+        run: |
+          $search = "set\(CN_VERSION "
+          $ccx_version = ((Get-Content CryptoNoteWallet.cmake | Select-String $search) | %{$_ -replace $search, ""}) | %{$_ -replace "\)", ""}
+          $ccx_version = $ccx_version + ".0"
+          # Update "CMakeLists.txt" with cmake dir
+          $qt5_cmake = "${{ env.Qt5_Dir }}/lib/cmake" -replace '[/]', '\\'
+          $file = "CMakeLists.txt"
+          $find = '^set\(CMAKE_PREFIX_PATH.+'
+          $replace = "set(CMAKE_PREFIX_PATH `"$($qt5_cmake)`")"
+          (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
+          # Update BMoreCoinWallet.nsi with the current version
+          $file = "BMoreCoinWallet.nsi"
+          $find = "^!define VERSION.+"
+          $replace = "!define VERSION '$ccx_version.0'"
+          (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
+      - name: Build
+        shell: powershell
+        id: build
+        run: |
+          $build_folder = "build"
+          $ccx_version = "${{ github.ref }}" -replace 'refs/tags/'
+          $release_name = "ccx-cli-win64-v$ccx_version"
+          mkdir "$build_folder"
+          cd "$build_folder"
+          cmake -G "Visual Studio 16 2019" ..
+          msbuild CryptoNote.sln /p:Configuration=Release /m
+          echo "::set-output name=build_folder::${build_folder}"
+          echo "::set-output name=release_folder::${release_folder}"
+          echo "::set-output name=release_name::${release_name}"
+          echo "::set-output name=ccx_version::${ccx_version}"
+      - name: Pack
+        shell: powershell
+        id: pack
+        run: |
+          $build_folder = "${{ steps.build.outputs.build_folder }}"
+          $release_name = "${{ steps.build.outputs.release_name }}"
+          $release_folder = "${{ steps.build.outputs.release_folder }}"
+          cd "$build_folder/$release_folder"
+          mkdir "Final"
+          choco install openssl -y
+          cp "C:\Program Files\OpenSSL-Win64\libcrypto*.dll" "Final/"
+          cp "C:\Program Files\OpenSSL-Win64\libssl*.dll" "Final/"
+          windeployqt --release CONCEAL-GUI.exe --dir "Final/" --no-translations --no-opengl-sw
+          cd ../../
+          makensis BMoreCoinWallet.nsi
+          cd "$build_folder/$release_folder"
+          Compress-Archive -Path BMoreCoin-Setup.exe -DestinationPath "$release_name.zip"
+          $sha256 = (Get-FileHash "$release_name.zip").Hash
+          $asset_path = "./$build_folder/$release_folder/$release_name.zip"
+          echo "::set-output name=sha256::${sha256}"
+          echo "::set-output name=release_name::${release_name}.zip"
+          echo "::set-output name=asset_path::${asset_path}"
  build-macos:
     name: macOS
     runs-on: macos-latest
