@@ -133,8 +133,7 @@ jobs:
           echo "::set-output name=asset_path::$build_folder/$release_name.zip"
           echo "::set-output name=ccx_version::${ccx_version}"
  
-
- build-appimage:
+  build-appimage:
     name: AppImage
     runs-on: ubuntu-18.04
     steps:
@@ -184,7 +183,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
- build-ubuntu18:
+  build-ubuntu18:
     name: Ubuntu 18.04
     runs-on: ubuntu-18.04
     steps:
@@ -224,7 +223,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
- build-ubuntu20:
+  build-ubuntu20:
     name: Ubuntu 20.04
     runs-on: ubuntu-20.04
     steps:
