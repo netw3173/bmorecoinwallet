@@ -103,9 +103,7 @@ jobs:
 
       - name: Install Boost and Qt
         run: |
-          brew update 
-          brew upgrade
-          brew versions boost
+          brew install https://boostorg.jfrog.io/artifactory/main/release/1.67.0/source/boost_1_67_0_rc2.zip
           brew install boost qt@5
       - name: Clone BMoreCoin
         run: |
