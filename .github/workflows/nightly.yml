@@ -9,11 +9,11 @@ on:
   pull_request:
 
 jobs:
- build-windows:
+  build-windows:
     name: Windows
-    runs-on: windows-latest
+    runs-on: windows-2019
     env:
-      BOOST_ROOT: C:/hostedtoolcache/windows/Boost/1.72.0/x86_64
+      BOOST_ROOT: C:/tools/boost/x86_64
     steps:
       - uses: actions/checkout@v2
 
@@ -35,40 +35,39 @@ jobs:
           modules: "qttools5 qtcharts"
           install-deps: "true"
 
-      - name: Clone BMoreCoin
+      - name: Clone bmorecoin-core
         shell: powershell
         run: |
           Remove-Item cryptonote -Recurse -Force -ErrorAction Ignore
-          git clone https://github.com/BMoreToken/bmorecoin.git cryptonote
-          
+          git clone https://github.com/BMoreToken/bmorecoin cryptonote
       - name: Pre-build setup
         shell: powershell
         run: |
           $search = "set\(CN_VERSION "
           $ccx_version = ((Get-Content CryptoNoteWallet.cmake | Select-String $search) | %{$_ -replace $search, ""}) | %{$_ -replace "\)", ""}
-          $ccx_version = $ccx_version + ".0"
           # Update "CMakeLists.txt" with cmake dir
           $qt5_cmake = "${{ env.Qt5_Dir }}/lib/cmake" -replace '[/]', '\\'
           $file = "CMakeLists.txt"
           $find = '^set\(CMAKE_PREFIX_PATH.+'
           $replace = "set(CMAKE_PREFIX_PATH `"$($qt5_cmake)`")"
           (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
-          # Update BMoreCoinWallet.nsi with the current version
-          $file = "BMoreCoinWallet.nsi"
-          $find = "^!define VERSION.+"
-          $replace = "!define VERSION '$ccx_version.0'"
+          # Update installer/windows/installer.iss with the current version
+          $file = "installer/windows/installer.iss"
+          $find = "^#define AppVersion.+"
+          $replace = "#define AppVersion '$ccx_version'"
           (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
       - name: Build
         shell: powershell
         id: build
         run: |
           $build_folder = "build"
+          $release_folder = "Release"
           $ccx_version = "${{ github.ref }}" -replace 'refs/tags/'
-          $release_name = "ccx-cli-win64-v$ccx_version"
-          mkdir "$build_folder"
+          $release_name = "ccx-desktop-win64-v$ccx_version"
+          New-Item "$build_folder\$release_folder" -ItemType Directory
           cd "$build_folder"
           cmake -G "Visual Studio 16 2019" ..
-          msbuild bmorecoin.sln /p:Configuration=Release /m
+          msbuild bmorecoin.sln /p:Configuration=Release /m:2
           echo "::set-output name=build_folder::${build_folder}"
           echo "::set-output name=release_folder::${release_folder}"
           echo "::set-output name=release_name::${release_name}"
@@ -85,17 +84,20 @@ jobs:
           choco install openssl -y
           cp "C:\Program Files\OpenSSL-Win64\libcrypto*.dll" "Final/"
           cp "C:\Program Files\OpenSSL-Win64\libssl*.dll" "Final/"
-          windeployqt --release CONCEAL-GUI.exe --dir "Final/" --no-translations --no-opengl-sw
-          cd ../../
-          makensis BMoreCoinWallet.nsi
-          cd "$build_folder/$release_folder"
-          Compress-Archive -Path BMoreCoin-Setup.exe -DestinationPath "$release_name.zip"
+          windeployqt --release bmorecoin.exe --dir "Final/" --no-translations --no-opengl-sw
+          mv Final ../../installer/windows/build
+          mv bmorecoin.exe ../../installer/windows/build/
+          cd ../../installer/windows/
+          iscc installer.iss
+          cd bin
+          Compress-Archive -Path Bmorecoin*.exe -DestinationPath "$release_name.zip"
           $sha256 = (Get-FileHash "$release_name.zip").Hash
-          $asset_path = "./$build_folder/$release_folder/$release_name.zip"
+          $asset_path = "installer/windows/bin/$release_name.zip"
           echo "::set-output name=sha256::${sha256}"
           echo "::set-output name=release_name::${release_name}.zip"
-          echo "::set-output name=asset_path::${asset_path}"
- build-macos:
+          echo "::set-output name=asset_path::${asset_path}" 
+          
+  build-macos:
     name: macOS
     runs-on: macos-latest
     steps:
