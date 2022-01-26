@@ -4,7 +4,7 @@
 #define AppCopyright 'Copyright (C) BMoreNetwork 2022'
 #define AppURL 'https://bmorecoin.com'
 #define UpdateURL 'https://github.com/BMoreToken/bmorecoinwallet/releases'
-#define AppExe 'bmorecoin-desktop.exe'
+#define AppExe 'bmorecoin.exe'
 #define AppComments 'BMoreCoin Wallet and Banking App'
 #define LicenseFile 'license.txt'
 
@@ -148,7 +148,7 @@ begin
 
 	Result := true;
 
-	if RegQueryStringValue(HKLM, 'Software\Microsoft\Windows\CurrentVersion\App Paths\BMoreCoin.exe', '', V) then
+	if RegQueryStringValue(HKLM, 'Software\Microsoft\Windows\CurrentVersion\App Paths\bmorecoin.exe', '', V) then
 	begin
     	if MsgBox('An old version of {#AppSetupName} is installed on this computer.' + #13#10 +
 		'This installer will uninstall the old version and install the new one.' + #13#10 + #13#10 +
