@@ -35,11 +35,12 @@ jobs:
           modules: "qttools5 qtcharts"
           install-deps: "true"
 
-      - name: Clone bmorecoin
+      - name: Clone BMoreCoin
         shell: powershell
         run: |
           Remove-Item cryptonote -Recurse -Force -ErrorAction Ignore
-          git clone https://github.com/BMoreToken/bmoretoken cryptonote
+          git clone https://github.com/BMoreToken/bmorecoin.git cryptonote
+          
       - name: Pre-build setup
         shell: powershell
         run: |
