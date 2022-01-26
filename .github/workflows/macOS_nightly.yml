@@ -3,11 +3,11 @@ name: macOS Nightly
 on:
   push:
     branches:
-      - "macOS"
+      - "main"
     tags-ignore:
       - "*" # We don't want this to run on release
   pull_request:
-
+  
 jobs:
 
   
