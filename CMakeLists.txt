@@ -23,6 +23,8 @@ include_directories(${CMAKE_BINARY_DIR}
 find_package(Qt5Gui REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
+set(Boost_NO_BOOST_CMAKE ON)
+
 set(Boost_USE_STATIC_LIBS ON)
 if(WIN32)
   set(Boost_USE_STATIC_RUNTIME OFF)
