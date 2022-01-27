@@ -1,0 +1,287 @@
+name: New Tests
+
+on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - "*" # We don't want this to run on release
+  pull_request:
+
+jobs:
+  build-windows:
+    name: Windows
+    runs-on: windows-2019
+    env:
+      BOOST_ROOT: C:/tools/boost/x86_64
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup msbuild
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Install Boost
+        shell: powershell
+        run: |
+          echo "${env:BOOST_ROOT}"
+          $Url = "https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe"
+          (New-Object System.Net.WebClient).DownloadFile($Url, "$env:TEMP\boost.exe")
+          Start-Process -Wait -FilePath "$env:TEMP\boost.exe" "/SILENT","/SP-","/SUPPRESSMSGBOXES","/DIR=${env:BOOST_ROOT}"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          host: "windows"
+          target: "desktop"
+          modules: "qttools5 qtcharts"
+          install-deps: "true"
+
+      - name: Clone bmorecoin
+        shell: powershell
+        run: |
+          Remove-Item cryptonote -Recurse -Force -ErrorAction Ignore
+          git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          ./.github/checkout.bat
+
+      - name: Pre-build setup
+        shell: powershell
+        run: |
+          $search = "set\(CN_VERSION "
+          $ccx_version = ((Get-Content CryptoNoteWallet.cmake | Select-String $search) | %{$_ -replace $search, ""}) | %{$_ -replace "\)", ""}
+
+          # Update "CMakeLists.txt" with cmake dir
+          $qt5_cmake = "${{ env.Qt5_Dir }}/lib/cmake" -replace '[/]', '\\'
+          $file = "CMakeLists.txt"
+          $find = '^set\(CMAKE_PREFIX_PATH.+'
+          $replace = "set(CMAKE_PREFIX_PATH `"$($qt5_cmake)`")"
+          (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
+
+          # Update installer/windows/installer.iss with the current version
+          $file = "installer/windows/installer.iss"
+          $find = "^#define AppVersion.+"
+          $replace = "#define AppVersion '$ccx_version'"
+          (Get-Content $file) | %{$_ -replace $find, $replace} | Set-Content $file
+
+      - name: Build
+        shell: powershell
+        id: build
+        run: |
+          $build_folder = "build"
+          $release_folder = "Release"
+          $sha = "${{ github.sha }}"
+          $ccx_version = $sha.SubString(0,7)
+          $release_name = "ccx-desktop-win64-dev-$ccx_version"
+
+          New-Item "$build_folder\$release_folder" -ItemType Directory
+          cd "$build_folder"
+
+          cmake -G "Visual Studio 16 2019" ..
+          msbuild bmorecoin.sln /p:Configuration=Release /m:2
+
+          echo "::set-output name=build_folder::${build_folder}"
+          echo "::set-output name=release_folder::${release_folder}"
+          echo "::set-output name=release_name::${release_name}"
+
+      - name: Pack
+        shell: powershell
+        id: pack
+        run: |
+          $build_folder = "${{ steps.build.outputs.build_folder }}"
+          $release_name = "${{ steps.build.outputs.release_name }}"
+          $release_folder = "${{ steps.build.outputs.release_folder }}"
+
+          cd "$build_folder/$release_folder"
+          mkdir "Final"
+          choco install openssl -y
+          cp "C:\Program Files\OpenSSL-Win64\libcrypto*.dll" "Final/"
+          cp "C:\Program Files\OpenSSL-Win64\libssl*.dll" "Final/"
+          windeployqt --release bmorecoin.exe --dir "Final/" --no-translations --no-opengl-sw
+
+          mv Final ../../installer/windows/build
+          mv bmorecoin.exe ../../installer/windows/build/
+          cd ../../installer/windows/
+          iscc installer.iss
+          cd ../..
+          mkdir $release_name
+          mv installer/windows/bin/*.exe $release_name/
+
+      - name: Upload To GH Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.build.outputs.release_name }}
+          path: ${{ steps.build.outputs.release_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-appimage:
+    name: AppImage
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost-all-dev
+
+      - name: Clone bmorecoin
+        run: |
+          rm -rf cryptonote
+          git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          ./.github/checkout.sh
+
+      - name: Build
+        id: build
+        run: |
+          ccx_version=${GITHUB_SHA::7}
+
+          make -j2 build-release
+
+          echo "::set-output name=ccx_version::$ccx_version"
+
+      - name: Create AppImage
+        id: appimage
+        run: |
+          ccx_version="${{steps.build.outputs.ccx_version}}"
+          release_name=ccx-desktop-appimage-dev-"$ccx_version"
+          appimage_name=bmorecoinwallet-dev-"$ccx_version"-x86_64.AppImage
+
+          mkdir $release_name
+          cd appimage
+          ./create-appimage.sh
+          mv bmorecoinwallet*.AppImage ../$release_name/$appimage_name
+          cd ..
+
+          echo "::set-output name=release_name::${release_name}"
+
+      - name: Upload To GH Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.appimage.outputs.release_name }}
+          path: ${{ steps.appimage.outputs.release_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-ubuntu18:
+    name: Ubuntu 18.04
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost-all-dev
+
+      - name: Clone bmorecoin
+        run: |
+          rm -rf cryptonote
+          git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          ./.github/checkout.sh
+
+      - name: Build
+        id: build
+        run: |
+          ccx_version=${GITHUB_SHA::7}
+          release_name=ccx-desktop-ubuntu-1804-dev-"$ccx_version"
+
+          make -j2 build-release
+          mkdir $release_name
+          mkdir -p $release_name/icon
+          mv build/release/bmorecoinwallet $release_name
+          cp bmorecoinwallet.desktop $release_name
+          cp src/images/conceal.png $release_name/icon
+
+          echo "::set-output name=release_name::${release_name}"
+
+      - name: Upload To GH Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.build.outputs.release_name }}
+          path: ${{ steps.build.outputs.release_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-ubuntu20:
+    name: Ubuntu 20.04
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y qt5-default qttools5-dev qttools5-dev-tools libqt5charts5-dev libboost-all-dev
+
+      - name: Clone bmorecoin
+        run: |
+          rm -rf cryptonote
+          git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          ./.github/checkout.sh
+
+      - name: Build
+        id: build
+        run: |
+          ccx_version=${GITHUB_SHA::7}
+          release_name=ccx-desktop-ubuntu-2004-dev-"$ccx_version"
+
+          make -j2 build-release
+          mkdir $release_name
+          mkdir -p $release_name/icon
+          mv build/release/bmorecoinwallet $release_name
+          cp bmorecoinwallet.desktop $release_name
+          
+
+          echo "::set-output name=release_name::${release_name}"
+
+      - name: Upload To GH Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.build.outputs.release_name }}
+          path: ${{ steps.build.outputs.release_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-macos:
+    name: macOS
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          brew install boost qt@5
+
+      - name: Clone bmorecoin
+        run: |
+          rm -rf cryptonote
+          git clone https://github.com/bmoretoken/bmorecoin.git cryptonote
+          ./.github/checkout.sh
+
+      - name: Build
+        id: build
+        run: |
+          export PATH="/usr/local/opt/qt@5/bin:$PATH"
+          build_folder="build/release"
+          ccx_version=${GITHUB_SHA::7}
+          release_name="ccx-desktop-macOS-dev-$ccx_version"
+          app_name="bmorecoinwallet.app"
+
+          make -j3 build-release
+          cd "$build_folder"
+          macdeployqt "$app_name"
+          cpack
+          mkdir "$release_name"
+          mv *.dmg "$release_name".dmg
+          mv "$release_name".dmg "$release_name"
+
+          echo "::set-output name=release_name::${release_name}"
+          echo "::set-output name=artifact_path::$build_folder/$release_name"
+
+      - name: Upload To GH Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.build.outputs.release_name }}
+          path: ${{ steps.build.outputs.artifact_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
