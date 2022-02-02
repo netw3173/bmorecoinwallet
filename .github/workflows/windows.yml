@@ -59,8 +59,7 @@ jobs:
         run: |
           $build_folder = "build"
           $release_folder = "Release"
-          $sha = "${{ github.sha }}"
-          $ccx_version = $sha.SubString(0,7)
+          $ccx_version=$(echo "$GITHUB_REF" | sed 's|refs/tags/||')
           $release_name = "ccx-desktop-win64-dev-$ccx_version"
           New-Item "$build_folder\$release_folder" -ItemType Directory
           cd "$build_folder"
