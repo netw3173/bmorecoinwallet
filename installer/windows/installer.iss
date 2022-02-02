@@ -86,12 +86,7 @@ Root: HKLM; Subkey: "Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Unins
 [Files]
 Source: "{#LicenseFile}"; DestDir: "{app}";
 Source: "build\{#AppExe}"; DestDir: "{app}"; DestName: "{#AppExe}";
-Source: "build\Qt5Core.dll"; DestDir: "{app}";
-Source: "build\Qt5Gui.dll"; DestDir: "{app}";
-Source: "build\Qt5Network.dll"; DestDir: "{app}";
-Source: "build\Qt5Widgets.dll"; DestDir: "{app}";
-Source: "build\libcrypto*.dll"; DestDir: "{app}";
-Source: "build\libssl*.dll"; DestDir: "{app}";
+Source: "build\*.dll"; DestDir: "{app}";
 Source: "build\platforms\qwindows.dll"; DestDir: "{app}/platforms";
 
 
@@ -114,8 +109,7 @@ Type: filesandordirs; Name: "{code:OldVersionPath}\styles"
 Type: files; Name: "{code:OldVersionPath}\BMoreCoin Wallet website.url"
 Type: files; Name: "{code:OldVersionPath}\bmorecoin.exe"
 Type: files; Name: "{code:OldVersionPath}\D3Dcompiler_47.dll"
-Type: files; Name: "{code:OldVersionPath}\lib*.dll"
-Type: files; Name: "{code:OldVersionPath}\Qt5*.dll"
+Type: files; Name: "{code:OldVersionPath}\*.dll"
 Type: files; Name: "{code:OldVersionPath}\uninstall.exe"
 Type: dirifempty; Name: "{code:OldVersionPath}"
 
