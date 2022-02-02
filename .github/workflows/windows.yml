@@ -81,8 +81,6 @@ jobs:
           mkdir "Final/platforms"
           choco install openssl -y
           cp "C:\Program Files\OpenSSL-Win64\*.dll" "Final/"
-          cp "D:\a\bmorecoinwallet\bmorecoinwallet\files\*.dll" "Final/"
-          cp "D:\a\bmorecoinwallet\bmorecoinwallet\files\platforms\*.dll" "Final/platforms/"
           windeployqt --release bmorecoin.exe --dir "Final/" --no-translations --no-opengl-sw
           mv Final ../../installer/windows/build
           mv bmorecoin.exe ../../installer/windows/build/
