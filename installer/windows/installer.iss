@@ -90,7 +90,6 @@ Source: "build\Qt5Core.dll"; DestDir: "{app}";
 Source: "build\Qt5Gui.dll"; DestDir: "{app}";
 Source: "build\Qt5Network.dll"; DestDir: "{app}";
 Source: "build\Qt5Widgets.dll"; DestDir: "{app}";
-Source: "build\Qt5Charts.dll"; DestDir: "{app}";
 Source: "build\libcrypto*.dll"; DestDir: "{app}";
 Source: "build\libssl*.dll"; DestDir: "{app}";
 Source: "build\platforms\qwindows.dll"; DestDir: "{app}/platforms";
