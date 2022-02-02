@@ -24,7 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          brew install boost clang
+          brew install boost
 
       - name: Clone bmorecoin
         run: |
