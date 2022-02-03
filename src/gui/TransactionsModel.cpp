@@ -183,7 +183,7 @@ QVariant TransactionsModel::getDisplayRole(const QModelIndex& _index) const {
   switch(_index.column()) {
   case COLUMN_DATE: {
     QDateTime date = _index.data(ROLE_DATE).toDateTime();
-    return (date.isNull() || !date.isValid() ? "-" : date.toString("dd-MM-yy HH:mm"));
+    return (date.isNull() || !date.isValid() ? "-" : date.toString("ddd MMMM d yyyy HH:mm"));
   }
 
   case COLUMN_HASH:
