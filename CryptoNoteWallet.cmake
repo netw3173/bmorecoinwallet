@@ -1,4 +1,4 @@
 
-set(CN_PROJECT_NAME "bmorecoin")
-set(CN_CURRENCY_DISPLAY_NAME "BMoreCoin")
-set(CN_CURRENCY_TICKER "BALTx")
+set(CN_PROJECT_NAME "pitcoin")
+set(CN_CURRENCY_DISPLAY_NAME "Pitcoin")
+set(CN_CURRENCY_TICKER "PBTC")
